@@ -9,22 +9,24 @@ services:
   db:
     image: postgres:13
     env_file: .env
-    volumes:
-      - pg_data_production:/var/lib/postgresql/data
+    volumes: 
+    - pg_data_production:/var/lib/postgresql/data
+    restart: unless-stopped
   backend:
     image: ${DOCKER_USERNAME}/kittygram_backend
     env_file: .env
     depends_on:
       - db
     volumes:
-    - static:/static
-    - media:/media
+      - static:/static
+      - media:/media
+    restart: unless-stopped
   frontend:
     image: ${DOCKER_USERNAME}/kittygram_frontend
-    env_file: .env
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
+    restart: unless-stopped
   gateway:
     image: ${DOCKER_USERNAME}/kittygram_gateway
     env_file: .env
@@ -36,3 +38,4 @@ services:
     volumes:
       - static:/static
       - media:/media
+    restart: unless-stopped
