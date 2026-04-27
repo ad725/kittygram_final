@@ -2,8 +2,8 @@ version: '3'
 
 volumes:
   pg_data_production:
-  static:
-  media:
+  static_volume:
+  media_volume:
 
 services:
   db:
@@ -18,14 +18,14 @@ services:
     depends_on:
       - db
     volumes:
-      - static:/static
-      - media:/media
+      - static_volume:/backend_static
+      - media_volume:/app/media
     restart: unless-stopped
   frontend:
     image: ${DOCKER_USERNAME}/kittygram_frontend
     command: cp -r /app/build/. /static/
     volumes:
-      - static:/static
+      - static_volume:/static
   gateway:
     image: ${DOCKER_USERNAME}/kittygram_gateway
     env_file: .env
@@ -35,6 +35,6 @@ services:
     ports:
       - 9000:80
     volumes:
-      - static:/static
-      - media:/media
+    - static_volume:/static
+    - media_volume:/media
     restart: unless-stopped
