@@ -17,13 +17,14 @@ services:
     depends_on:
       - db
     volumes:
-    - static_volume:/app/static
+    - static_volume:/app/static_backend
     - media_volume:/app/media
   frontend:
     build: ./frontend/
-    command: cp -r /app/build/. /static/
+    command: sh -c "cp -r /app/build/* /static/ && tail -f /dev/null"
     volumes:
       - static_volume:/static
+    restart: unless-stopped
   gateway:
     build: ./nginx/
     env_file: .env
