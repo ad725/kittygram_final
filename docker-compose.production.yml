@@ -26,7 +26,6 @@ services:
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
-    restart: unless-stopped
   gateway:
     image: ${DOCKER_USERNAME}/kittygram_gateway
     env_file: .env
