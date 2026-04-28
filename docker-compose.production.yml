@@ -36,5 +36,6 @@ services:
       - 9000:80
     volumes:
     - static_volume:/static
+    - static_volume:/static_backend
     - media_volume:/media
     restart: unless-stopped
