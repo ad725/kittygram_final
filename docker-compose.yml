@@ -21,16 +21,18 @@ services:
     - media_volume:/app/media
   frontend:
     build: ./frontend/
-    command: sh -c "cp -r /app/build/* /static/ && tail -f /dev/null"
+    command: cp -r /app/build/. /static/
     volumes:
       - static_volume:/static
-    restart: unless-stopped
+    restart: "no"
   gateway:
     build: ./nginx/
     env_file: .env
     depends_on:
-      - backend
-      - frontend
+      frontend:
+        condition: service_completed_successfully
+      backend:
+        condition: service_started
     ports:
       - 9000:80
     volumes:
